@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنتجات - البيت الدمشقي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f9f7f4;
+        }
+        
+        .arabic-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='brick-wall' fill='%23a17a50' fill-opacity='0.15'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .section-heading:after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: #d97706;
+            margin: 8px auto 0;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #d97706;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .product-card {
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-tab {
+            transition: all 0.3s ease;
+        }
+        
+        .category-tab.active {
+            background-color: #b45309;
+            color: white;
+        }
+        
+        .category-tab:hover:not(.active) {
+            background-color: #fef3c7;
+        }
+        
+        .gallery {
+            display: none;
+        }
+        
+        .gallery.active {
+            display: grid;
+        }
+        
+        /* إضافة تأثير تحميل للصور */
+        .img-loading {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .img-loading::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: loading 1.5s infinite;
+            z-index: 1;
+        }
+        
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* تنسيق زر التحميل */
+        .loading-spinner {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 3px solid rgba(209, 154, 68, 0.3);
+            border-radius: 50%;
+            border-top-color: #d97706;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white text-amber-900 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html">
+                    <img src="b10.png" alt="شعار البيت الدمشقي" class="h-14 w-auto"/>
+                </a>
+            </div>
+            <nav class="hidden md:flex space-x-5 space-x-reverse">
+                <a href="index.html#home" class="nav-link px-3 py-2 font-medium hover:text-amber-600 transition">الرئيسية</a>
+                <a href="products.html" class="nav-link px-3 py-2 font-medium text-amber-600 border-b-2 border-amber-600">المنتجات</a>
+                <a href="index.html#about" class="nav-link px-3 py-2 font-medium hover:text-amber-600 transition">من نحن</a>
+                <a href="index.html#location" class="nav-link px-3 py-2 font-medium hover:text-amber-600 transition">موقعنا</a>
+            </nav>
+            <div class="flex items-center">
+                <a href="index.html#contact" class="hidden md:inline-flex items-center bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200 px-4 py-2 rounded-lg font-medium transition duration-300">
+                    <i class="fas fa-envelope ml-2"></i>
+                    <span>تواصل معنا</span>
+                </a>
+                <button class="md:hidden text-amber-800 text-xl focus:outline-none" id="mobile-menu-button">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu (Hidden by Default) -->
+        <nav class="hidden bg-white md:hidden px-4 py-2 shadow-inner border-t border-amber-100" id="mobile-menu">
+            <a href="index.html#home" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">الرئيسية</a>
+            <a href="products.html" class="block px-3 py-2 text-amber-600 bg-amber-50 rounded">المنتجات</a>
+            <a href="index.html#about" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">من نحن</a>
+            <a href="index.html#location" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">موقعنا</a>
+            <a href="index.html#contact" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">تواصل معنا</a>
+        </nav>
+    </header>
+
+    <!-- Page Title -->
+    <section class="bg-gradient-to-b from-amber-50 to-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold text-amber-900 mb-4">منتجاتنا</h1>
+            <p class="text-gray-700 max-w-3xl mx-auto mb-8">تشكيلة واسعة من المفروشات السورية الأصيلة المصنوعة يدوياً بحرفية عالية لتضفي لمسة من التراث الدمشقي العريق على منزلك</p>
+            <div class="h-1 w-24 bg-amber-600 mx-auto"></div>
+        </div>
+    </section>
+
+    <!-- Products Categories Tabs -->
+    <section class="py-8 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center gap-2 mb-8" id="category-tabs">
+                <button class="category-tab active px-5 py-3 bg-amber-700 text-white rounded-lg font-bold transition shadow-sm" data-category="salah">
+                    <i class="fas fa-pray ml-2"></i>
+                    سجادة صلاة
+                </button>
+                <button class="category-tab px-5 py-3 bg-amber-100 text-amber-900 rounded-lg font-bold transition shadow-sm" data-category="lauha">
+                    <i class="fas fa-image ml-2"></i>
+                    لوحات
+                </button>
+                <button class="category-tab px-5 py-3 bg-amber-100 text-amber-900 rounded-lg font-bold transition shadow-sm" data-category="carpet">
+                    <i class="fas fa-rug ml-2"></i>
+                    سجاد
+                </button>
+                <button class="category-tab px-5 py-3 bg-amber-100 text-amber-900 rounded-lg font-bold transition shadow-sm" data-category="mfrsh">
+                    <i class="fas fa-table ml-2"></i>
+                    مفارش طاولة
+                </button>
+                <button class="category-tab px-5 py-3 bg-amber-100 text-amber-900 rounded-lg font-bold transition shadow-sm" data-category="zinah">
+                    <i class="fas fa-star ml-2"></i>
+                    زينة
+                </button>
+            </div>
+            
+            <!-- Category Headers -->
+            <div class="bg-amber-50 p-6 rounded-lg mb-8 border border-amber-100 shadow-sm text-center">
+                <div id="category-description-salah" class="category-description active">
+                    <h2 class="text-2xl font-bold text-amber-900">سجادة صلاة</h2>
+                </div>
+                <div id="category-description-lauha" class="category-description hidden">
+                    <h2 class="text-2xl font-bold text-amber-900">لوحات</h2>
+                </div>
+                <div id="category-description-carpet" class="category-description hidden">
+                    <h2 class="text-2xl font-bold text-amber-900">سجاد</h2>
+                </div>
+                <div id="category-description-mfrsh" class="category-description hidden">
+                    <h2 class="text-2xl font-bold text-amber-900">مفارش طاولة</h2>
+                </div>
+                <div id="category-description-zinah" class="category-description hidden">
+                    <h2 class="text-2xl font-bold text-amber-900">زينة</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Gallery -->
+    <section class="py-8 bg-white mb-12">
+        <div class="container mx-auto px-4">
+            <!-- حالة التحميل -->
+            <div id="loading-indicator" class="text-center py-12">
+                <div class="loading-spinner mb-4"></div>
+                <p class="text-amber-900">جاري تحميل المنتجات...</p>
+            </div>
+            
+            <!-- Prayer Rugs Gallery -->
+            <div id="gallery-salah" class="gallery active grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
+                <!-- سيتم إضافة بطاقات المنتجات ديناميكياً -->
+            </div>
+            
+            <!-- Wall Art Gallery -->
+            <div id="gallery-lauha" class="gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
+                <!-- سيتم إضافة بطاقات المنتجات ديناميكياً -->
+            </div>
+            
+            <!-- Carpets Gallery -->
+            <div id="gallery-carpet" class="gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
+                <!-- سيتم إضافة بطاقات المنتجات ديناميكياً -->
+            </div>
+            
+            <!-- Table Cloths Gallery -->
+            <div id="gallery-mfrsh" class="gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
+                <!-- سيتم إضافة بطاقات المنتجات ديناميكياً -->
+            </div>
+            
+            <!-- Decoration Gallery -->
+            <div id="gallery-zinah" class="gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
+                <!-- سيتم إضافة بطاقات المنتجات ديناميكياً -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-amber-50 arabic-pattern">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-amber-900 mb-6">هل أعجبتك منتجاتنا؟</h2>
+            <p class="text-gray-700 mb-8 max-w-2xl mx-auto">تواصل معنا الآن للحصول على المزيد من المعلومات حول منتجاتنا أو لطلب قطع مخصصة تناسب ذوقك</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="index.html#contact" class="bg-amber-700 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg inline-flex items-center transition duration-300 shadow-md">
+                    <i class="fas fa-envelope ml-2"></i>
+                    <span>تواصل معنا</span>
+                </a>
+                <a href="index.html#location" class="bg-white hover:bg-amber-50 text-amber-800 font-bold py-3 px-6 rounded-lg inline-flex items-center transition duration-300 border border-amber-200 shadow-sm">
+                    <i class="fas fa-map-marker-alt ml-2"></i>
+                    <span>زيارة متجرنا</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-amber-900 text-white pt-12 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap">
+                <!-- Logo & About -->
+                <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                    <img src="b10.png" alt="شعار البيت الدمشقي" class="h-14 w-auto mb-4"/>
+                    <p class="text-amber-200 mb-6 max-w-xs">نحن متجر متخصص في المفروشات السورية التقليدية المصنوعة يدوياً بجودة عالية من قلب دمشق القديمة.</p>
+                    <div class="flex space-x-4 space-x-reverse">
+                        <a href="#" class="text-white hover:text-amber-200 transition">
+                            <i class="fab fa-facebook-f text-lg"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-amber-200 transition">
+                            <i class="fab fa-instagram text-lg"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-amber-200 transition">
+                            <i class="fab fa-whatsapp text-lg"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-amber-200 transition">
+                            <i class="fab fa-telegram text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Links -->
+                <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                    <h3 class="text-lg font-bold mb-6 border-b border-amber-800 pb-2">روابط سريعة</h3>
+                    <div class="grid grid-cols-2">
+                        <div>
+                            <ul class="space-y-3">
+                                <li>
+                                    <a href="index.html#home" class="hover:text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>الرئيسية</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="products.html" class="text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>المنتجات</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="index.html#about" class="hover:text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>من نحن</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="space-y-3">
+                                <li>
+                                    <a href="index.html#location" class="hover:text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>موقعنا</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="index.html#contact" class="hover:text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>تواصل معنا</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="hover:text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>الشروط والأحكام</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="w-full md:w-1/3">
+                    <h3 class="text-lg font-bold mb-6 border-b border-amber-800 pb-2">معلومات الاتصال</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-amber-500 ml-3 mt-1"></i>
+                            <span>سوق الحميدية، بالقرب من قلعة دمشق، دمشق، سوريا</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt text-amber-500 ml-3 mt-1"></i>
+                            <span dir="ltr">+963 11 123 4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-amber-500 ml-3 mt-1"></i>
+                            <span>info@damascushome.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-clock text-amber-500 ml-3 mt-1"></i>
+                            <div>
+                                <p>السبت - الخميس: ٩ص - ٧م</p>
+                                <p>الجمعة: مغلق</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-amber-800 mt-8 pt-6 text-center">
+                <p class="text-amber-200 text-sm">جميع الحقوق محفوظة &copy; ٢٠٢٥ البيت الدمشقي - المفروشات السورية</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 bg-amber-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300 z-50 hover:bg-amber-600">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- كود JavaScript -->
+    <script>
+ // ========================
+// الإعدادات والمتغيرات
+// ========================
+
+// قائمة بأسماء المجلدات ومعلوماتها
+const categories = [
+    { id: 'salah', title: 'سجادة صلاة', icon: 'pray' },
+    { id: 'lauha', title: 'لوحة', icon: 'image' },
+    { id: 'carpet', title: 'سجادة', icon: 'rug' },
+    { id: 'mfrsh', title: 'مفرش طاولة', icon: 'table' },
+    { id: 'zinah', title: 'قطعة زينة', icon: 'star' }
+];
+
+// تكوينات إضافية
+const config = {
+    maxImagesToCheck: 50,  // عدد الصور القصوى للتحقق من كل مجلد
+    imageFormats: ['jpg', 'jpeg', 'png'], // صيغ الصور المدعومة
+    loadingDelay: 300,     // تأخير بين تحميل الصور (بالمللي ثانية)
+    placeholderImage: '/api/placeholder/400/300'  // صورة بديلة في حالة الفشل
+};
+
+// متغير لتخزين البيانات المحملة
+let loadedProductData = {};
+
+// ========================
+// الدوال المساعدة
+// ========================
+
+// دالة لإنشاء عنوان مناسب بناءً على رقم الصورة والمجلد
+function generateTitle(imageNumber, category) {
+    const categoryInfo = categories.find(c => c.id === category);
+    return `${categoryInfo.title} ${imageNumber}`;
+}
+
+// دالة لإنشاء وصف مختصر مناسب بناءً على المجلد
+function generateShortDesc(category) {
+    switch(category) {
+        case 'salah':
+            return `سجادة صلاة بنمط تقليدي دمشقي`;
+        case 'lauha':
+            return `لوحة فنية بتصميم أصيل`;
+        case 'carpet':
+            return `سجادة منزلية فاخرة`;
+        case 'mfrsh':
+            return `مفرش طاولة مطرز بأنماط شرقية`;
+        case 'zinah':
+            return `قطعة زينة منزلية بلمسة دمشقية`;
+        default:
+            return `منتج من البيت الدمشقي`;
+    }
+}
+
+// دالة للتحقق من وجود الصورة
+function checkImageExists(imagePath) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = imagePath;
+    });
+}
+
+// دالة تأخير مساعدة (للتحكم في سرعة التحميل)
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ========================
+// دوال تحميل البيانات
+// ========================
+
+// دالة لتحميل صور فئة محددة ديناميكياً والتحقق من وجودها
+async function loadCategoryImages(category) {
+    // إظهار مؤشر التحميل
+    const loadingIndicator = document.getElementById('loading-indicator');
+    loadingIndicator.classList.remove('hidden');
+    
+    // التحقق مما إذا كانت بيانات هذه الفئة محملة مسبقاً
+    if (loadedProductData[category]) {
+        // إخفاء مؤشر التحميل
+        loadingIndicator.classList.add('hidden');
+        
+        // عرض المنتجات المحملة مسبقاً
+        displayCategoryProducts(category);
+        return;
+    }
+    
+    // تحميل بيانات الفئة
+    const categoryProducts = [];
+    
+    // محاولة تحميل الصور بصيغ مختلفة
+    let imageNumber = 1;
+    let continueLoading = true;
+    
+    while (continueLoading && imageNumber <= config.maxImagesToCheck) {
+        let imageFound = false;
+        
+        // محاولة كل صيغة صورة مدعومة
+        for (const format of config.imageFormats) {
+            const imagePath = `${category}/${imageNumber}.${format}`;
+            
+            try {
+                // إضافة تأخير صغير لتخفيف الحمل
+                await delay(config.loadingDelay);
+                
+                // التحقق من وجود الصورة
+                const exists = await checkImageExists(imagePath);
+                
+                if (exists) {
+                    // إذا وجدت الصورة، نضيفها للبيانات
+                    categoryProducts.push({
+                        id: `${category}-${imageNumber}`,
+                        image: imagePath,
+                        title: generateTitle(imageNumber, category),
+                        shortDesc: generateShortDesc(category)
+                    });
+                    
+                    imageFound = true;
+                    break; // الخروج من حلقة صيغ الصور
+                }
+            } catch (error) {
+                console.error(`خطأ في فحص الصورة ${imagePath}:`, error);
+            }
+        }
+        
+        if (imageFound) {
+            imageNumber++;
+        } else {
+            // إذا لم نجد أي صورة بجميع الصيغ، نتوقف
+            continueLoading = false;
+        }
+    }
+    
+    // تخزين البيانات المحملة
+    loadedProductData[category] = categoryProducts;
+    
+    // إخفاء مؤشر التحميل
+    loadingIndicator.classList.add('hidden');
+    
+    // عرض المنتجات
+    displayCategoryProducts(category);
+}
+
+// ========================
+// دوال عرض البيانات
+// ========================
+
+// دالة لعرض منتجات فئة محددة
+function displayCategoryProducts(category) {
+    // الحصول على معرض الفئة المحددة
+    const gallery = document.getElementById(`gallery-${category}`);
+    
+    // إعادة تهيئة المعرض
+    gallery.innerHTML = '';
+    
+    // الحصول على بيانات المنتجات
+    const products = loadedProductData[category] || [];
+    
+    // إذا لم توجد منتجات في هذه الفئة
+    if (products.length === 0) {
+        gallery.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">لا توجد منتجات في هذه الفئة حالياً</div>';
+        return;
+    }
+    
+    // إنشاء بطاقات المنتجات
+    products.forEach(product => {
+        // إنشاء بطاقة المنتج
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition';
+        productCard.innerHTML = `
+            <div class="relative">
+                <div class="img-loading w-full h-48 bg-amber-50">
+                    <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover" 
+                        onerror="this.onerror=null; this.src='${config.placeholderImage}'; this.alt='صورة غير متوفرة'; this.parentNode.classList.remove('img-loading');"
+                        onload="this.parentNode.classList.remove('img-loading');" />
+                </div>
+            </div>
+            <div class="p-4">
+                <h3 class="text-lg font-bold text-amber-900 mb-2">${product.title}</h3>
+                <p class="text-gray-700 text-sm mb-4">${product.shortDesc}</p>
+                <a href="index.html#contact" class="bg-amber-50 hover:bg-amber-100 text-amber-800 py-2 px-4 rounded-full inline-flex items-center transition duration-200 border border-amber-200 w-full justify-center">
+                    <span>استفسار</span>
+                    <i class="fas fa-envelope mr-2"></i>
+                </a>
+            </div>
+        `;
+        
+        gallery.appendChild(productCard);
+    });
+}
+
+// دالة لتغيير الفئة النشطة
+function changeActiveCategory(category) {
+    // إخفاء جميع المعارض
+    document.querySelectorAll('.gallery').forEach(gallery => {
+        gallery.classList.remove('active');
+        gallery.classList.add('hidden');
+    });
+    
+    // إظهار معرض الفئة المحددة
+    const gallery = document.getElementById(`gallery-${category}`);
+    gallery.classList.remove('hidden');
+    gallery.classList.add('active');
+    
+    // إخفاء جميع الأوصاف
+    document.querySelectorAll('.category-description').forEach(desc => {
+        desc.classList.add('hidden');
+    });
+    
+    // إظهار وصف الفئة المحددة
+    document.getElementById(`category-description-${category}`).classList.remove('hidden');
+    
+    // تحميل بيانات الفئة إذا لم تكن محملة مسبقاً
+    loadCategoryImages(category);
+}
+
+// ========================
+// دوال إدارة واجهة المستخدم
+// ========================
+
+// دالة لتهيئة عناصر واجهة المستخدم
+function initUIElements() {
+    // تبديل القائمة في الهاتف المحمول
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+    });
+    
+    // زر العودة إلى الأعلى
+    const backToTopButton = document.getElementById('back-to-top');
+    
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            backToTopButton.classList.remove('opacity-0', 'invisible');
+            backToTopButton.classList.add('opacity-100', 'visible');
+        } else {
+            backToTopButton.classList.add('opacity-0', 'invisible');
+            backToTopButton.classList.remove('opacity-100', 'visible');
+        }
+    });
+    
+    backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    // علامات تبويب الفئات
+    const categoryTabs = document.querySelectorAll('.category-tab');
+    
+    categoryTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // إزالة الفئة النشطة من جميع علامات التبويب
+            categoryTabs.forEach(t => {
+                t.classList.remove('active');
+                t.classList.remove('bg-amber-700');
+                t.classList.remove('text-white');
+                t.classList.add('bg-amber-100');
+                t.classList.add('text-amber-900');
+            });
+            
+            // إضافة الفئة النشطة إلى علامة التبويب التي تم النقر عليها
+            tab.classList.add('active');
+            tab.classList.add('bg-amber-700');
+            tab.classList.add('text-white');
+            tab.classList.remove('bg-amber-100');
+            tab.classList.remove('text-amber-900');
+            
+            // تغيير الفئة النشطة
+            const category = tab.getAttribute('data-category');
+            changeActiveCategory(category);
+        });
+    });
+}
+
+// ========================
+// تشغيل الكود عند تحميل الصفحة
+// ========================
+
+// تهيئة الصفحة عند التحميل
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('تحميل صفحة المنتجات...');
+    
+    // تهيئة عناصر واجهة المستخدم
+    initUIElements();
+    
+    try {
+        // الحصول على الفئة النشطة الافتراضية
+        const defaultCategory = document.querySelector('.category-tab.active').dataset.category;
+        
+        // تحميل صور الفئة الافتراضية فقط
+        await loadCategoryImages(defaultCategory);
+    } catch (error) {
+        console.error('حدث خطأ أثناء تحميل المنتجات:', error);
+        
+        // عرض رسالة خطأ للمستخدم
+        document.getElementById('loading-indicator').innerHTML = `
+            <div class="text-amber-700 mb-4">
+                <i class="fas fa-exclamation-triangle text-3xl"></i>
+            </div>
+            <p class="text-amber-900 font-bold">حدث خطأ أثناء تحميل المنتجات</p>
+            <p class="text-gray-600 mt-2">يرجى تحديث الصفحة والمحاولة مرة أخرى</p>
+            <button onclick="window.location.reload()" class="mt-4 bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">
+                إعادة تحميل
+            </button>
+        `;
+    }
+});
+    </script>
+</body>
+</html>
