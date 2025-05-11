@@ -80,6 +80,7 @@
         .img-loading {
             position: relative;
             overflow: hidden;
+            background-color: #f3f4f6;
         }
         
         .img-loading::before {
@@ -102,8 +103,8 @@
         /* تنسيق زر التحميل */
         .loading-spinner {
             display: inline-block;
-            width: 1.5rem;
-            height: 1.5rem;
+            width: 2rem;
+            height: 2rem;
             border: 3px solid rgba(209, 154, 68, 0.3);
             border-radius: 50%;
             border-top-color: #d97706;
@@ -112,6 +113,41 @@
         
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        /* تنسيق إشعار التحميل */
+        .loading-message {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            max-width: 24rem;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* تحسين عرض الصور */
+        .product-image {
+            width: 100%;
+            height: 16rem;
+            object-fit: cover;
+            object-position: center;
+            transition: all 0.5s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        /* تحسين تجربة الاستخدام على الجوال */
+        @media (max-width: 640px) {
+            .category-tab {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            
+            .product-image {
+                height: 12rem;
+            }
         }
     </style>
 </head>
@@ -163,7 +199,7 @@
     <section class="py-8 bg-white">
         <div class="container mx-auto px-4">
             <div class="flex flex-wrap justify-center gap-2 mb-8" id="category-tabs">
-                <button class="category-tab active px-5 py-3 bg-amber-700 text-white rounded-lg font-bold transition shadow-sm" data-category="salah">
+                <button class="category-tab px-5 py-3 bg-amber-100 text-amber-900 rounded-lg font-bold transition shadow-sm" data-category="salah">
                     <i class="fas fa-pray ml-2"></i>
                     سجادة صلاة
                 </button>
@@ -185,22 +221,50 @@
                 </button>
             </div>
             
-            <!-- Category Headers -->
+            <!-- Category Information -->
             <div class="bg-amber-50 p-6 rounded-lg mb-8 border border-amber-100 shadow-sm text-center">
-                <div id="category-description-salah" class="category-description active">
-                    <h2 class="text-2xl font-bold text-amber-900">سجادة صلاة</h2>
+                <!-- Welcome Message - Will be hidden after category selection -->
+                <div id="welcome-message" class="py-8">
+                    <i class="fas fa-hand-point-up text-amber-600 text-4xl mb-4"></i>
+                    <h2 class="text-2xl font-bold text-amber-900 mb-4">اختر أحد الأصناف لعرض المنتجات</h2>
+                    <p class="text-gray-700">يرجى النقر على أحد الأصناف أعلاه لعرض المنتجات المتوفرة</p>
                 </div>
-                <div id="category-description-lauha" class="category-description hidden">
-                    <h2 class="text-2xl font-bold text-amber-900">لوحات</h2>
+                
+                <!-- Category Descriptions - Hidden by default -->
+                <div id="category-info-salah" class="category-info hidden">
+                    <h2 class="text-2xl font-bold text-amber-900 mb-2">سجادة صلاة</h2>
+                    <p class="text-gray-700">سجادات صلاة أصيلة بنمط تقليدي مصنوعة يدوياً من أجود أنواع الأقمشة</p>
+                    <div class="text-amber-700 mt-4 text-sm">
+                        <span id="products-count-salah" class="bg-amber-100 px-3 py-1 rounded-full">32 منتج</span>
+                    </div>
                 </div>
-                <div id="category-description-carpet" class="category-description hidden">
-                    <h2 class="text-2xl font-bold text-amber-900">سجاد</h2>
+                <div id="category-info-lauha" class="category-info hidden">
+                    <h2 class="text-2xl font-bold text-amber-900 mb-2">لوحات</h2>
+                    <p class="text-gray-700">لوحات فنية بتصاميم فريدة مستوحاة من التراث الإسلامي والفن العربي الأصيل</p>
+                    <div class="text-amber-700 mt-4 text-sm">
+                        <span id="products-count-lauha" class="bg-amber-100 px-3 py-1 rounded-full">95 منتج</span>
+                    </div>
                 </div>
-                <div id="category-description-mfrsh" class="category-description hidden">
-                    <h2 class="text-2xl font-bold text-amber-900">مفارش طاولة</h2>
+                <div id="category-info-carpet" class="category-info hidden">
+                    <h2 class="text-2xl font-bold text-amber-900 mb-2">سجاد</h2>
+                    <p class="text-gray-700">سجاد شرقي أصيل بنقوش تقليدية ومعاصرة منسوج بأنامل حرفيين مهرة</p>
+                    <div class="text-amber-700 mt-4 text-sm">
+                        <span id="products-count-carpet" class="bg-amber-100 px-3 py-1 rounded-full">43 منتج</span>
+                    </div>
                 </div>
-                <div id="category-description-zinah" class="category-description hidden">
-                    <h2 class="text-2xl font-bold text-amber-900">زينة</h2>
+                <div id="category-info-mfrsh" class="category-info hidden">
+                    <h2 class="text-2xl font-bold text-amber-900 mb-2">مفارش طاولة</h2>
+                    <p class="text-gray-700">مفارش طاولة مطرزة يدوياً بتصاميم أنيقة تضفي لمسة من الجمال على موائدكم</p>
+                    <div class="text-amber-700 mt-4 text-sm">
+                        <span id="products-count-mfrsh" class="bg-amber-100 px-3 py-1 rounded-full">69 منتج</span>
+                    </div>
+                </div>
+                <div id="category-info-zinah" class="category-info hidden">
+                    <h2 class="text-2xl font-bold text-amber-900 mb-2">زينة</h2>
+                    <p class="text-gray-700">قطع زينة تقليدية تعكس أصالة التراث الدمشقي لتزيين منزلك بلمسة من الفن الشرقي</p>
+                    <div class="text-amber-700 mt-4 text-sm">
+                        <span id="products-count-zinah" class="bg-amber-100 px-3 py-1 rounded-full">14 منتج</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -209,35 +273,48 @@
     <!-- Products Gallery -->
     <section class="py-8 bg-white mb-12">
         <div class="container mx-auto px-4">
-            <!-- حالة التحميل -->
-            <div id="loading-indicator" class="text-center py-12">
-                <div class="loading-spinner mb-4"></div>
-                <p class="text-amber-900">جاري تحميل المنتجات...</p>
+            <!-- Loading Indicator - Initially Hidden -->
+            <div id="loading-indicator" class="py-16 text-center hidden">
+                <div class="loading-message inline-block">
+                    <div class="loading-spinner mb-4 mx-auto"></div>
+                    <p class="text-amber-900 font-medium">جاري تحميل المنتجات...</p>
+                    <p class="text-gray-500 text-sm mt-2">يرجى الانتظار قليلاً</p>
+                </div>
             </div>
             
-            <!-- Prayer Rugs Gallery -->
-            <div id="gallery-salah" class="gallery active grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
+            <!-- Product Galleries for Each Category - All Initially Hidden -->
+            <div id="gallery-salah" class="gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
                 <!-- سيتم إضافة بطاقات المنتجات ديناميكياً -->
             </div>
             
-            <!-- Wall Art Gallery -->
             <div id="gallery-lauha" class="gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
                 <!-- سيتم إضافة بطاقات المنتجات ديناميكياً -->
             </div>
             
-            <!-- Carpets Gallery -->
             <div id="gallery-carpet" class="gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
                 <!-- سيتم إضافة بطاقات المنتجات ديناميكياً -->
             </div>
             
-            <!-- Table Cloths Gallery -->
             <div id="gallery-mfrsh" class="gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
                 <!-- سيتم إضافة بطاقات المنتجات ديناميكياً -->
             </div>
             
-            <!-- Decoration Gallery -->
             <div id="gallery-zinah" class="gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
                 <!-- سيتم إضافة بطاقات المنتجات ديناميكياً -->
+            </div>
+
+            <!-- Error Message - Initially Hidden -->
+            <div id="error-message" class="py-16 text-center hidden">
+                <div class="loading-message inline-block">
+                    <div class="text-amber-700 mb-4">
+                        <i class="fas fa-exclamation-triangle text-4xl"></i>
+                    </div>
+                    <p class="text-amber-900 font-bold">حدث خطأ أثناء تحميل المنتجات</p>
+                    <p class="text-gray-600 mt-2" id="error-details">يرجى المحاولة مرة أخرى</p>
+                    <button onclick="retryLoadingCategory()" class="mt-6 bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">
+                        إعادة المحاولة
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -375,317 +452,427 @@
 
     <!-- كود JavaScript -->
     <script>
- // ========================
-// الإعدادات والمتغيرات
-// ========================
-
-// قائمة بأسماء المجلدات ومعلوماتها
-const categories = [
-    { id: 'salah', title: 'سجادة صلاة', icon: 'pray' },
-    { id: 'lauha', title: 'لوحة', icon: 'image' },
-    { id: 'carpet', title: 'سجادة', icon: 'rug' },
-    { id: 'mfrsh', title: 'مفرش طاولة', icon: 'table' },
-    { id: 'zinah', title: 'قطعة زينة', icon: 'star' }
-];
-
-// تكوينات إضافية
-const config = {
-    maxImagesToCheck: 50,  // عدد الصور القصوى للتحقق من كل مجلد
-    imageFormats: ['jpg', 'jpeg', 'png'], // صيغ الصور المدعومة
-    loadingDelay: 300,     // تأخير بين تحميل الصور (بالمللي ثانية)
-    placeholderImage: '/api/placeholder/400/300'  // صورة بديلة في حالة الفشل
-};
-
-// متغير لتخزين البيانات المحملة
-let loadedProductData = {};
-
-// ========================
-// الدوال المساعدة
-// ========================
-
-// دالة لإنشاء عنوان مناسب بناءً على رقم الصورة والمجلد
-function generateTitle(imageNumber, category) {
-    const categoryInfo = categories.find(c => c.id === category);
-    return `${categoryInfo.title} ${imageNumber}`;
-}
-
-// دالة لإنشاء وصف مختصر مناسب بناءً على المجلد
-function generateShortDesc(category) {
-    switch(category) {
-        case 'salah':
-            return `سجادة صلاة بنمط تقليدي دمشقي`;
-        case 'lauha':
-            return `لوحة فنية بتصميم أصيل`;
-        case 'carpet':
-            return `سجادة منزلية فاخرة`;
-        case 'mfrsh':
-            return `مفرش طاولة مطرز بأنماط شرقية`;
-        case 'zinah':
-            return `قطعة زينة منزلية بلمسة دمشقية`;
-        default:
-            return `منتج من البيت الدمشقي`;
-    }
-}
-
-// دالة للتحقق من وجود الصورة
-function checkImageExists(imagePath) {
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-        img.src = imagePath;
-    });
-}
-
-// دالة تأخير مساعدة (للتحكم في سرعة التحميل)
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// ========================
-// دوال تحميل البيانات
-// ========================
-
-// دالة لتحميل صور فئة محددة ديناميكياً والتحقق من وجودها
-async function loadCategoryImages(category) {
-    // إظهار مؤشر التحميل
-    const loadingIndicator = document.getElementById('loading-indicator');
-    loadingIndicator.classList.remove('hidden');
-    
-    // التحقق مما إذا كانت بيانات هذه الفئة محملة مسبقاً
-    if (loadedProductData[category]) {
-        // إخفاء مؤشر التحميل
-        loadingIndicator.classList.add('hidden');
+        // ===================================
+        // الإعدادات والمتغيرات العامة
+        // ===================================
         
-        // عرض المنتجات المحملة مسبقاً
-        displayCategoryProducts(category);
-        return;
-    }
-    
-    // تحميل بيانات الفئة
-    const categoryProducts = [];
-    
-    // محاولة تحميل الصور بصيغ مختلفة
-    let imageNumber = 1;
-    let continueLoading = true;
-    
-    while (continueLoading && imageNumber <= config.maxImagesToCheck) {
-        let imageFound = false;
+        // قائمة بالفئات ومعلوماتها
+        const categories = [
+            { id: 'salah', title: 'سجادة صلاة', count: 32, icon: 'pray', defaultDesc: 'سجادة صلاة بنمط تقليدي' },
+            { id: 'lauha', title: 'لوحة فنية', count: 95, icon: 'image', defaultDesc: 'لوحة فنية بتصميم فريد' },
+            { id: 'carpet', title: 'سجادة', count: 43, icon: 'rug', defaultDesc: 'سجادة شرقية أصيلة' },
+            { id: 'mfrsh', title: 'مفرش طاولة', count: 69, icon: 'table', defaultDesc: 'مفرش طاولة مطرز يدوياً' },
+            { id: 'zinah', title: 'قطعة زينة', count: 14, icon: 'star', defaultDesc: 'قطعة زينة تقليدية' }
+        ];
         
-        // محاولة كل صيغة صورة مدعومة
-        for (const format of config.imageFormats) {
-            const imagePath = `${category}/${imageNumber}.${format}`;
+        // الإعدادات العامة
+        const config = {
+            itemsPerPage: 12, // عدد المنتجات في كل صفحة (0 لعرض جميع المنتجات)
+            configFileName: 'config.json', // اسم ملف التكوين في كل مجلد
+            fallbackImage: './placeholder.jpg', // صورة بديلة في حالة عدم وجود الصورة (صورة محلية)
+            lazyLoadImages: true, // تحميل الصور بشكل متأخر (تحسين الأداء)
+            imageExtensions: ['jpg', 'jpeg', 'png', 'gif'], // امتدادات الصور المدعومة
+            debug: true // تفعيل رسائل التصحيح في وحدة التحكم
+        };
+
+        // متغيرات لإدارة عرض المنتجات
+        let productData = {}; // بيانات المنتجات من كل المجلدات
+        let loadedCategories = []; // الفئات التي تم تحميلها بالفعل
+        let currentCategory = null; // الفئة الحالية المعروضة
+        let currentPage = {}; // الصفحة الحالية لكل فئة
+        let isLoading = false; // للتحكم في عملية التحميل
+        
+        // تهيئة المتغيرات
+        categories.forEach(category => {
+            currentPage[category.id] = 1;
+        });
+        
+        // ===================================
+        // دوال تحميل البيانات
+        // ===================================
+        
+        // دالة لتحميل ملف التكوين (config.json) من مجلد معين
+        async function loadCategoryConfig(categoryId) {
+            const category = categories.find(c => c.id === categoryId);
+            if (!category) return [];
             
             try {
-                // إضافة تأخير صغير لتخفيف الحمل
-                await delay(config.loadingDelay);
+                logDebug(`تحميل ملف التكوين للمجلد: ${categoryId}`);
                 
-                // التحقق من وجود الصورة
-                const exists = await checkImageExists(imagePath);
+                // إظهار مؤشر التحميل
+                showLoading(true);
                 
-                if (exists) {
-                    // إذا وجدت الصورة، نضيفها للبيانات
-                    categoryProducts.push({
-                        id: `${category}-${imageNumber}`,
-                        image: imagePath,
-                        title: generateTitle(imageNumber, category),
-                        shortDesc: generateShortDesc(category)
-                    });
-                    
-                    imageFound = true;
-                    break; // الخروج من حلقة صيغ الصور
+                const response = await fetch(`${categoryId}/${config.configFileName}`);
+                
+                if (!response.ok) {
+                    throw new Error(`فشل تحميل ملف التكوين (${response.status}): ${categoryId}/${config.configFileName}`);
                 }
+                
+                const configData = await response.json();
+                
+                // التحقق من صحة البيانات
+                if (!configData.products || !Array.isArray(configData.products)) {
+                    throw new Error('تنسيق ملف التكوين غير صحيح');
+                }
+                
+                // إضافة مسار المجلد للصور إذا لم يكن موجوداً
+                return configData.products.map(product => {
+                    // إذا كان مسار الصورة لا يحتوي على اسم المجلد، نضيفه
+                    if (product.image && !product.image.startsWith(categoryId)) {
+                        product.image = `${categoryId}/${product.image}`;
+                    }
+                    return product;
+                });
             } catch (error) {
-                console.error(`خطأ في فحص الصورة ${imagePath}:`, error);
+                logDebug(`خطأ في تحميل ملف التكوين للمجلد ${categoryId}:`, error);
+                
+                // محاولة تحميل الصور مباشرة
+                return await generateProductsByImageCheck(categoryId);
+            } finally {
+                // إخفاء مؤشر التحميل
+                showLoading(false);
             }
         }
         
-        if (imageFound) {
-            imageNumber++;
-        } else {
-            // إذا لم نجد أي صورة بجميع الصيغ، نتوقف
-            continueLoading = false;
+        // دالة لإنشاء بيانات المنتج بناءً على التحقق من وجود الصور
+        async function generateProductsByImageCheck(categoryId) {
+            const category = categories.find(c => c.id === categoryId);
+            if (!category) return [];
+            
+            logDebug(`محاولة اكتشاف الصور في المجلد ${categoryId}`);
+            
+            const products = [];
+            
+            // محاولة فحص وجود الصور بجميع الامتدادات المدعومة
+            for (let i = 1; i <= category.count; i++) {
+                let imageFound = false;
+                let foundExtension = null;
+                
+                // التحقق من كل امتداد
+                for (const ext of config.imageExtensions) {
+                    const imagePath = `${categoryId}/${i}.${ext}`;
+                    try {
+                        const exists = await checkImageExists(imagePath);
+                        if (exists) {
+                            imageFound = true;
+                            foundExtension = ext;
+                            break;
+                        }
+                    } catch (err) {
+                        logDebug(`خطأ في التحقق من الصورة ${imagePath}:`, err);
+                    }
+                }
+                
+                // إذا تم العثور على الصورة، أضف بيانات المنتج
+                if (imageFound) {
+                    products.push({
+                        id: `${categoryId}-${i}`,
+                        image: `${categoryId}/${i}.${foundExtension}`,
+                        title: `${category.title} ${i}`,
+                        shortDesc: category.defaultDesc
+                    });
+                } else {
+                    // محاولة إضافة المنتج مع امتداد افتراضي
+                    products.push({
+                        id: `${categoryId}-${i}`,
+                        image: `${categoryId}/${i}.jpg`, // امتداد افتراضي
+                        title: `${category.title} ${i}`,
+                        shortDesc: category.defaultDesc
+                    });
+                }
+            }
+            
+            return products;
         }
-    }
-    
-    // تخزين البيانات المحملة
-    loadedProductData[category] = categoryProducts;
-    
-    // إخفاء مؤشر التحميل
-    loadingIndicator.classList.add('hidden');
-    
-    // عرض المنتجات
-    displayCategoryProducts(category);
-}
-
-// ========================
-// دوال عرض البيانات
-// ========================
-
-// دالة لعرض منتجات فئة محددة
-function displayCategoryProducts(category) {
-    // الحصول على معرض الفئة المحددة
-    const gallery = document.getElementById(`gallery-${category}`);
-    
-    // إعادة تهيئة المعرض
-    gallery.innerHTML = '';
-    
-    // الحصول على بيانات المنتجات
-    const products = loadedProductData[category] || [];
-    
-    // إذا لم توجد منتجات في هذه الفئة
-    if (products.length === 0) {
-        gallery.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">لا توجد منتجات في هذه الفئة حالياً</div>';
-        return;
-    }
-    
-    // إنشاء بطاقات المنتجات
-    products.forEach(product => {
-        // إنشاء بطاقة المنتج
-        const productCard = document.createElement('div');
-        productCard.className = 'product-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition';
-        productCard.innerHTML = `
-            <div class="relative">
-                <div class="img-loading w-full h-48 bg-amber-50">
-                    <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover" 
-                        onerror="this.onerror=null; this.src='${config.placeholderImage}'; this.alt='صورة غير متوفرة'; this.parentNode.classList.remove('img-loading');"
-                        onload="this.parentNode.classList.remove('img-loading');" />
-                </div>
-            </div>
-            <div class="p-4">
-                <h3 class="text-lg font-bold text-amber-900 mb-2">${product.title}</h3>
-                <p class="text-gray-700 text-sm mb-4">${product.shortDesc}</p>
-                <a href="index.html#contact" class="bg-amber-50 hover:bg-amber-100 text-amber-800 py-2 px-4 rounded-full inline-flex items-center transition duration-200 border border-amber-200 w-full justify-center">
-                    <span>استفسار</span>
-                    <i class="fas fa-envelope mr-2"></i>
-                </a>
-            </div>
-        `;
         
-        gallery.appendChild(productCard);
-    });
-}
-
-// دالة لتغيير الفئة النشطة
-function changeActiveCategory(category) {
-    // إخفاء جميع المعارض
-    document.querySelectorAll('.gallery').forEach(gallery => {
-        gallery.classList.remove('active');
-        gallery.classList.add('hidden');
-    });
-    
-    // إظهار معرض الفئة المحددة
-    const gallery = document.getElementById(`gallery-${category}`);
-    gallery.classList.remove('hidden');
-    gallery.classList.add('active');
-    
-    // إخفاء جميع الأوصاف
-    document.querySelectorAll('.category-description').forEach(desc => {
-        desc.classList.add('hidden');
-    });
-    
-    // إظهار وصف الفئة المحددة
-    document.getElementById(`category-description-${category}`).classList.remove('hidden');
-    
-    // تحميل بيانات الفئة إذا لم تكن محملة مسبقاً
-    loadCategoryImages(category);
-}
-
-// ========================
-// دوال إدارة واجهة المستخدم
-// ========================
-
-// دالة لتهيئة عناصر واجهة المستخدم
-function initUIElements() {
-    // تبديل القائمة في الهاتف المحمول
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    mobileMenuButton.addEventListener('click', function() {
-        mobileMenu.classList.toggle('hidden');
-    });
-    
-    // زر العودة إلى الأعلى
-    const backToTopButton = document.getElementById('back-to-top');
-    
-    window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-            backToTopButton.classList.remove('opacity-0', 'invisible');
-            backToTopButton.classList.add('opacity-100', 'visible');
-        } else {
-            backToTopButton.classList.add('opacity-0', 'invisible');
-            backToTopButton.classList.remove('opacity-100', 'visible');
+        // دالة للتحقق من وجود الصورة
+        function checkImageExists(imagePath) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = imagePath;
+            });
         }
-    });
-    
-    backToTopButton.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-    
-    // علامات تبويب الفئات
-    const categoryTabs = document.querySelectorAll('.category-tab');
-    
-    categoryTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            // إزالة الفئة النشطة من جميع علامات التبويب
-            categoryTabs.forEach(t => {
-                t.classList.remove('active');
-                t.classList.remove('bg-amber-700');
-                t.classList.remove('text-white');
-                t.classList.add('bg-amber-100');
-                t.classList.add('text-amber-900');
+        
+        // دالة لتحميل بيانات منتجات فئة معينة
+        async function loadCategoryProducts(categoryId) {
+            if (isLoading) return; // تجنب التحميل المتكرر
+            isLoading = true;
+            
+            try {
+                // تحقق مما إذا كانت الفئة محملة بالفعل
+                if (loadedCategories.includes(categoryId) && productData[categoryId]) {
+                    // الفئة محملة بالفعل، فقط قم بعرضها
+                    displayCategoryProducts(categoryId);
+                    return;
+                }
+                
+                // إظهار مؤشر التحميل وإخفاء رسالة الخطأ
+                showLoading(true);
+                hideError();
+                
+                // تحميل بيانات الفئة
+                const products = await loadCategoryConfig(categoryId);
+                
+                // تخزين البيانات
+                productData[categoryId] = products;
+                
+                // إضافة الفئة إلى قائمة الفئات المحملة
+                if (!loadedCategories.includes(categoryId)) {
+                    loadedCategories.push(categoryId);
+                }
+                
+                // عرض المنتجات
+                displayCategoryProducts(categoryId);
+            } catch (error) {
+                logDebug(`خطأ في تحميل منتجات الفئة ${categoryId}:`, error);
+                showError(`حدث خطأ أثناء تحميل المنتجات: ${error.message}`);
+            } finally {
+                isLoading = false;
+                showLoading(false);
+            }
+        }
+
+        // ===================================
+        // دوال عرض المنتجات
+        // ===================================
+        
+        // دالة لإنشاء بطاقة منتج واحد
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.className = 'product-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition';
+            
+            card.innerHTML = `
+                <div class="relative overflow-hidden">
+                    <div class="img-loading w-full h-64">
+                        <img src="${product.image}" alt="${product.title}" 
+                            class="product-image w-full h-full object-cover transition-transform duration-500"
+                            onerror="this.onerror=null; this.src='${config.fallbackImage}'; this.alt='صورة غير متوفرة'; this.parentNode.classList.remove('img-loading');"
+                            onload="this.parentNode.classList.remove('img-loading');"
+                            ${config.lazyLoadImages ? 'loading="lazy"' : ''}
+                        />
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-amber-900 mb-2">${product.title}</h3>
+                    <p class="text-gray-700 text-sm mb-4">${product.shortDesc}</p>
+                    <a href="index.html#contact" class="bg-amber-50 hover:bg-amber-100 text-amber-800 py-2 px-4 rounded-full inline-flex items-center justify-center transition duration-200 border border-amber-200 w-full">
+                        <span>استفسار</span>
+                        <i class="fas fa-envelope mr-2"></i>
+                    </a>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        // دالة لعرض منتجات فئة معينة
+        function displayCategoryProducts(categoryId) {
+            const products = productData[categoryId] || [];
+            
+            // الحصول على عناصر DOM
+            const galleryEl = document.getElementById(`gallery-${categoryId}`);
+            
+            // تحديث عداد المنتجات
+            const countEl = document.getElementById(`products-count-${categoryId}`);
+            if (countEl) {
+                countEl.textContent = `${products.length} منتج`;
+            }
+            
+            // تفريغ المعرض
+            galleryEl.innerHTML = '';
+            
+            // التحقق من وجود منتجات
+            if (products.length === 0) {
+                galleryEl.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500">لا توجد منتجات في هذه الفئة حالياً</div>';
+                return;
+            }
+            
+            // حساب المنتجات التي سيتم عرضها في الصفحة الحالية
+            const page = currentPage[categoryId] || 1;
+            let productsToShow = products;
+            
+            if (config.itemsPerPage > 0) {
+                const startIndex = (page - 1) * config.itemsPerPage;
+                const endIndex = Math.min(startIndex + config.itemsPerPage, products.length);
+                productsToShow = products.slice(startIndex, endIndex);
+            }
+            
+            // إنشاء وإضافة بطاقات المنتجات
+            productsToShow.forEach(product => {
+                const productCard = createProductCard(product);
+                galleryEl.appendChild(productCard);
             });
             
-            // إضافة الفئة النشطة إلى علامة التبويب التي تم النقر عليها
-            tab.classList.add('active');
-            tab.classList.add('bg-amber-700');
-            tab.classList.add('text-white');
-            tab.classList.remove('bg-amber-100');
-            tab.classList.remove('text-amber-900');
+            // تحديث الفئة الحالية
+            currentCategory = categoryId;
             
-            // تغيير الفئة النشطة
-            const category = tab.getAttribute('data-category');
-            changeActiveCategory(category);
-        });
-    });
-}
-
-// ========================
-// تشغيل الكود عند تحميل الصفحة
-// ========================
-
-// تهيئة الصفحة عند التحميل
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log('تحميل صفحة المنتجات...');
-    
-    // تهيئة عناصر واجهة المستخدم
-    initUIElements();
-    
-    try {
-        // الحصول على الفئة النشطة الافتراضية
-        const defaultCategory = document.querySelector('.category-tab.active').dataset.category;
+            // إخفاء رسالة الترحيب
+            document.getElementById('welcome-message').classList.add('hidden');
+            
+            // إظهار معرض المنتجات
+            showActiveCategory();
+        }
         
-        // تحميل صور الفئة الافتراضية فقط
-        await loadCategoryImages(defaultCategory);
-    } catch (error) {
-        console.error('حدث خطأ أثناء تحميل المنتجات:', error);
+        // دالة لإظهار معرض الفئة النشطة فقط
+        function showActiveCategory() {
+            // إخفاء جميع معارض المنتجات
+            document.querySelectorAll('.gallery').forEach(gallery => {
+                gallery.classList.remove('active');
+                gallery.classList.add('hidden');
+            });
+            
+            // إخفاء جميع معلومات الفئات
+            document.querySelectorAll('.category-info').forEach(info => {
+                info.classList.add('hidden');
+            });
+            
+            if (currentCategory) {
+                // إظهار المعرض النشط
+                const gallery = document.getElementById(`gallery-${currentCategory}`);
+                if (gallery) {
+                    gallery.classList.remove('hidden');
+                    gallery.classList.add('active');
+                }
+                
+                // إظهار معلومات الفئة النشطة
+                const categoryInfo = document.getElementById(`category-info-${currentCategory}`);
+                if (categoryInfo) {
+                    categoryInfo.classList.remove('hidden');
+                }
+                
+                // تحديث حالة التبويبات
+                updateTabsStatus(currentCategory);
+            }
+        }
         
-        // عرض رسالة خطأ للمستخدم
-        document.getElementById('loading-indicator').innerHTML = `
-            <div class="text-amber-700 mb-4">
-                <i class="fas fa-exclamation-triangle text-3xl"></i>
-            </div>
-            <p class="text-amber-900 font-bold">حدث خطأ أثناء تحميل المنتجات</p>
-            <p class="text-gray-600 mt-2">يرجى تحديث الصفحة والمحاولة مرة أخرى</p>
-            <button onclick="window.location.reload()" class="mt-4 bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">
-                إعادة تحميل
-            </button>
-        `;
-    }
-});
+        // تحديث حالة تبويبات الفئات
+        function updateTabsStatus(activeCategory) {
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                const category = tab.getAttribute('data-category');
+                
+                // إزالة حالة النشاط من جميع التبويبات
+                tab.classList.remove('active');
+                tab.classList.remove('bg-amber-700');
+                tab.classList.remove('text-white');
+                tab.classList.add('bg-amber-100');
+                tab.classList.add('text-amber-900');
+                
+                // إضافة حالة النشاط للتبويب المحدد
+                if (category === activeCategory) {
+                    tab.classList.add('active');
+                    tab.classList.add('bg-amber-700');
+                    tab.classList.add('text-white');
+                    tab.classList.remove('bg-amber-100');
+                    tab.classList.remove('text-amber-900');
+                }
+            });
+        }
+        
+        // إظهار/إخفاء مؤشر التحميل
+        function showLoading(show) {
+            const loadingIndicator = document.getElementById('loading-indicator');
+            if (show) {
+                loadingIndicator.classList.remove('hidden');
+            } else {
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+        
+        // إظهار رسالة خطأ
+        function showError(message) {
+            const errorElement = document.getElementById('error-message');
+            const errorDetailsElement = document.getElementById('error-details');
+            
+            errorDetailsElement.textContent = message || 'يرجى المحاولة مرة أخرى';
+            errorElement.classList.remove('hidden');
+        }
+        
+        // إخفاء رسالة الخطأ
+        function hideError() {
+            const errorElement = document.getElementById('error-message');
+            errorElement.classList.add('hidden');
+        }
+        
+        // دالة لإعادة محاولة تحميل الفئة الحالية
+        function retryLoadingCategory() {
+            if (currentCategory) {
+                loadCategoryProducts(currentCategory);
+            }
+        }
+        
+        // دالة لطباعة رسائل التصحيح
+        function logDebug(...args) {
+            if (config.debug) {
+                console.log(...args);
+            }
+        }
+
+        // ===================================
+        // دوال إدارة واجهة المستخدم
+        // ===================================
+        
+        // دالة لتهيئة عناصر واجهة المستخدم
+        function initUIElements() {
+            // تبديل القائمة في الهاتف المحمول
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // زر العودة إلى الأعلى
+            const backToTopButton = document.getElementById('back-to-top');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.remove('opacity-0', 'invisible');
+                    backToTopButton.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopButton.classList.add('opacity-0', 'invisible');
+                    backToTopButton.classList.remove('opacity-100', 'visible');
+                }
+            });
+            
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // علامات تبويب الفئات
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const categoryId = tab.getAttribute('data-category');
+                    if (categoryId) {
+                        // تحميل وعرض المنتجات للفئة المحددة
+                        loadCategoryProducts(categoryId);
+                    }
+                });
+            });
+        }
+
+        // ===================================
+        // تشغيل الكود عند تحميل الصفحة
+        // ===================================
+        
+        // دالة تهيئة الصفحة
+        function initializePage() {
+            logDebug('تهيئة صفحة المنتجات...');
+            
+            // تهيئة عناصر واجهة المستخدم
+            initUIElements();
+            
+            // لا نقوم بتحميل أي منتجات تلقائياً - ننتظر حتى يختار المستخدم فئة
+        }
+        
+        // تهيئة الصفحة عند اكتمال تحميل DOM
+        document.addEventListener('DOMContentLoaded', initializePage);
     </script>
 </body>
 </html>
