@@ -69,40 +69,117 @@
             background-color: #d97706;
             border-radius: 0 4px 4px 0;
         }
+
+        /* تنسيق إشعار التحميل */
+.loading-message {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    max-width: 24rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+/* تعديلات اللوغو */
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.site-logo {
+    height: auto;
+    width: auto;
+    /* زيادة حجم الشعار بشكل أكبر في كافة الحالات */
+    min-height: 3.5rem; /* 56px */
+    max-height: 4.5rem; /* 72px */
+    transition: transform 0.3s ease;
+}
+
+.site-logo:hover {
+    transform: scale(1.05);
+}
+
+/* إضافة اسم الموقع بجانب الشعار */
+.site-title {
+    font-weight: 700;
+    color: #92400e; /* amber-800 */
+    margin-right: 0.75rem;
+    font-size: 1.25rem;
+    display: none; /* إخفاء العنوان بشكل افتراضي */
+}
+
+/* تحسين تجربة الاستخدام على الجوال */
+@media (max-width: 640px) {
+    /* حجم أكبر للشعار في الموبايل */
+    .site-logo {
+        min-height: 4.5rem; /* 56px */
+        max-height: 6rem; /* 64px */
+    }
+    
+    /* تعديل العناصر الأخرى في الهيدر للموبايل */
+    .mobile-header-container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+}
+
+/* شاشات متوسطة */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .site-logo {
+        min-height: 5rem; /* 64px */
+        max-height: 5.5rem; /* 72px */
+    }
+}
+
+/* شاشات كبيرة */
+@media (min-width: 1025px) {
+    .site-title {
+        display: block; /* إظهار العنوان في الشاشات الكبيرة */
+    }
+    
+    .site-logo {
+        min-height: 4.5rem; /* 72px */
+        max-height: 5rem; /* 80px */
+    }
+}
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="bg-white text-amber-900 shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center">
-                <img src="b10.png" alt="شعار البيت الدمشقي" class="h-14 w-auto"/>
-            </div>
-            <nav class="hidden md:flex space-x-5 space-x-reverse">
-                <a href="#home" class="nav-link px-3 py-2 font-medium hover:text-amber-600 transition">الرئيسية</a>
-                <a href="product.html" class="nav-link px-3 py-2 font-medium hover:text-amber-600 transition">المنتجات</a>
-                <a href="#about" class="nav-link px-3 py-2 font-medium hover:text-amber-600 transition">من نحن</a>
-                <a href="#location" class="nav-link px-3 py-2 font-medium hover:text-amber-600 transition">موقعنا</a>
-            </nav>
-            <div class="flex items-center">
-                <a href="#contact" class="hidden md:inline-flex items-center bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200 px-4 py-2 rounded-lg font-medium transition duration-300">
-                    <i class="fas fa-envelope ml-2"></i>
-                    <span>تواصل معنا</span>
-                </a>
-                <button class="md:hidden text-amber-800 text-xl focus:outline-none">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
+<!-- Header -->
+<header class="bg-white text-amber-900 shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center mobile-header-container">
+        <div class="flex-shrink-0 logo-container">
+            <a href="index.html" class="flex items-center">
+                <!-- الشعار بحجم أكبر -->
+                <img src="b10.png" alt="شعار البيت الدمشقي" class="site-logo"/>
+            </a>
         </div>
-        <!-- Mobile Menu (Hidden by Default) -->
-        <nav class="hidden bg-white md:hidden px-4 py-2 shadow-inner border-t border-amber-100">
-            <a href="#home" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">الرئيسية</a>
-            <a href="product.html" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">المنتجات</a>
-            <a href="#about" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">من نحن</a>
-            <a href="#location" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">موقعنا</a>
-            <a href="#contact" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">تواصل معنا</a>
+        <nav class="hidden md:flex space-x-5 space-x-reverse">
+            <a href="#home" class="nav-link px-3 py-2 font-medium text-amber-600 border-b-2 border-amber-600">الرئيسية</a>
+            <a href="product.html" class="nav-link px-3 py-2 font-medium hover:text-amber-600 transition">المنتجات</a>
+            <a href="#about" class="nav-link px-3 py-2 font-medium hover:text-amber-600 transition">من نحن</a>
+            <a href="#location" class="nav-link px-3 py-2 font-medium hover:text-amber-600 transition">موقعنا</a>
         </nav>
-    </header>
+        <div class="flex items-center">
+            <a href="#contact" class="hidden md:inline-flex items-center bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200 px-4 py-2 rounded-lg font-medium transition duration-300">
+                <i class="fas fa-envelope ml-2"></i>
+                <span>تواصل معنا</span>
+            </a>
+            <button class="md:hidden text-amber-800 text-xl focus:outline-none" id="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+    <!-- Mobile Menu (Hidden by Default) -->
+    <nav class="hidden bg-white md:hidden px-4 py-2 shadow-inner border-t border-amber-100" id="mobile-menu">
+        <a href="#home" class="block px-3 py-2 text-amber-600 bg-amber-50 rounded">الرئيسية</a>
+        <a href="product.html" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">المنتجات</a>
+        <a href="#about" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">من نحن</a>
+        <a href="#location" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">موقعنا</a>
+        <a href="#contact" class="block px-3 py-2 text-amber-900 hover:bg-amber-50 rounded">تواصل معنا</a>
+    </nav>
+</header>
 
     <!-- Hero Section -->
     <section id="home" class="bg-gradient-to-b from-amber-50 to-white py-16">
@@ -677,43 +754,47 @@
     </button>
 
     <script>
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+ 
+        
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
         });
+    });
+});
+
+// Mobile menu toggle
+const mobileMenuButton = document.getElementById('mobile-menu-button');
+const mobileMenu = document.getElementById('mobile-menu');
+
+mobileMenuButton.addEventListener('click', function() {
+    mobileMenu.classList.toggle('hidden');
+});
+
+// Back to Top Button
+const backToTopButton = document.getElementById('back-to-top');
+
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+        backToTopButton.classList.remove('opacity-0', 'invisible');
+        backToTopButton.classList.add('opacity-100', 'visible');
+    } else {
+        backToTopButton.classList.add('opacity-0', 'invisible');
+        backToTopButton.classList.remove('opacity-100', 'visible');
+    }
+});
+
+backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
         
-        // Mobile menu toggle
-        const menuButton = document.querySelector('header button');
-        const mobileNav = document.querySelector('header nav.hidden');
-        
-        menuButton.addEventListener('click', () => {
-            mobileNav.classList.toggle('hidden');
-        });
-        
-        // Back to Top Button
-        const backToTopButton = document.getElementById('back-to-top');
-        
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.remove('opacity-0', 'invisible');
-                backToTopButton.classList.add('opacity-100', 'visible');
-            } else {
-                backToTopButton.classList.add('opacity-0', 'invisible');
-                backToTopButton.classList.remove('opacity-100', 'visible');
-            }
-        });
-        
-        backToTopButton.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
     </script>
 </body>
 </html>

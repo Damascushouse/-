@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -137,6 +138,35 @@
         .product-card:hover .product-image {
             transform: scale(1.05);
         }
+        
+        /* تعديلات اللوغو */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .site-logo {
+            height: auto;
+            width: auto;
+            /* زيادة حجم الشعار بشكل أكبر في كافة الحالات */
+            min-height: 3.5rem; /* 56px */
+            max-height: 4.5rem; /* 72px */
+            transition: transform 0.3s ease;
+        }
+        
+        .site-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        /* إضافة اسم الموقع بجانب الشعار */
+        .site-title {
+            font-weight: 700;
+            color: #92400e; /* amber-800 */
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+            display: none; /* إخفاء العنوان بشكل افتراضي */
+        }
 
         /* تحسين تجربة الاستخدام على الجوال */
         @media (max-width: 640px) {
@@ -148,17 +178,50 @@
             .product-image {
                 height: 12rem;
             }
+            
+            /* حجم أكبر للشعار في الموبايل */
+            .site-logo {
+                min-height: 4.5rem; /* 56px */
+                max-height: 6rem; /* 64px */
+            }
+            
+            /* تعديل العناصر الأخرى في الهيدر للموبايل */
+            .mobile-header-container {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+        }
+        
+        /* شاشات متوسطة */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .site-logo {
+                min-height: 5rem; /* 64px */
+                max-height: 5.5rem; /* 72px */
+            }
+        }
+        
+        /* شاشات كبيرة */
+        @media (min-width: 1025px) {
+            .site-title {
+                display: block; /* إظهار العنوان في الشاشات الكبيرة */
+            }
+            
+            .site-logo {
+                min-height: 4.5rem; /* 72px */
+                max-height: 5rem; /* 80px */
+            }
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="bg-white text-amber-900 shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center">
-                <a href="index.html">
-                    <img src="b10.png" alt="شعار البيت الدمشقي" class="h-14 w-auto"/>
-                </a>
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center mobile-header-container">
+            <div class="flex-shrink-0 logo-container">
+                <a href="index.html" class="flex items-center">
+                    <!-- الشعار بحجم أكبر -->
+                    <img src="b10.png" alt="شعار البيت الدمشقي" class="site-logo"/>
+                  </a>
             </div>
             <nav class="hidden md:flex space-x-5 space-x-reverse">
                 <a href="index.html#home" class="nav-link px-3 py-2 font-medium hover:text-amber-600 transition">الرئيسية</a>
@@ -343,8 +406,118 @@
             <div class="flex flex-wrap">
                 <!-- Logo & About -->
                 <div class="w-full md:w-1/3 mb-8 md:mb-0">
-                    <img src="b10.png" alt="شعار البيت الدمشقي" class="h-14 w-auto mb-4"/>
+                    <!-- إضافة الشعار في الفوتر أيضاً -->
+                    <div class="mb-4">
+                        <img src="b10.png" alt="شعار البيت الدمشقي" class="h-16 w-auto"/>
+                    </div>
                     <p class="text-amber-200 mb-6 max-w-xs">نحن متجر متخصص في المفروشات السورية التقليدية المصنوعة يدوياً بجودة عالية من قلب دمشق القديمة.</p>
+                    <div class="flex space-x-4 space-x-reverse">
+                        <a href="#" class="text-white hover:text-amber-200 transition">
+                            <i class="fab fa-facebook-f text-lg"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-amber-200 transition">
+                            <i class="fab fa-instagram text-lg"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-amber-200 transition">
+                            <i class="fab fa-whatsapp text-lg"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-amber-200 transition">
+                            <i class="fab fa-telegram text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Links -->
+                <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                    <h3 class="text-lg font-bold mb-6 border-b border-amber-800 pb-2">روابط سريعة</h3>
+                    <div class="grid grid-cols-2">
+                        <div>
+                            <ul class="space-y-3">
+                                <li>
+                                    <a href="index.html#home" class="hover:text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>الرئيسية</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="products.html" class="text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>المنتجات</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="index.html#about" class="hover:text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>من نحن</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="space-y-3">
+                                <li>
+                                    <a href="index.html#location" class="hover:text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>موقعنا</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="index.html#contact" class="hover:text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>تواصل معنا</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="hover:text-amber-200 transition inline-flex items-center">
+                                        <i class="fas fa-chevron-left text-xs ml-1 text-amber-500"></i>
+                                        <span>الشروط والأحكام</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="w-full md:w-1/3">
+                    <h3 class="text-lg font-bold mb-6 border-b border-amber-800 pb-2">معلومات الاتصال</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-amber-500 ml-3 mt-1"></i>
+                            <span>سوق الحميدية، بالقرب من قلعة دمشق، دمشق، سوريا</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt text-amber-500 ml-3 mt-1"></i>
+                            <span dir="ltr">+963 11 123 4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-amber-500 ml-3 mt-1"></i>
+                            <span>info@damascushome.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-clock text-amber-500 ml-3 mt-1"></i>
+                            <div>
+                                <p>السبت - الخميس: ٩ص - ٧م</p>
+                                <p>الجمعة: مغلق</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-amber-800 mt-8 pt-6 text-center">
+                <p class="text-amber-200 text-sm">جميع الحقوق محفوظة &copy; ٢٠٢٥ البيت الدمشقي - المفروشات السورية</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Footer -->
+    <footer class="bg-amber-900 text-white pt-12 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap">
+                <!-- Logo & About -->
+                <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                     <p class="text-amber-200 mb-6 max-w-xs">نحن متجر متخصص في المفروشات السورية التقليدية المصنوعة يدوياً بجودة عالية من قلب دمشق القديمة.</p>
                     <div class="flex space-x-4 space-x-reverse">
                         <a href="#" class="text-white hover:text-amber-200 transition">
                             <i class="fab fa-facebook-f text-lg"></i>
